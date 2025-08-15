@@ -1,0 +1,26 @@
+<%- include('partials/header') %>
+
+<div class="form-container">
+    <h2>Add a New Room to <%= hotel.name %></h2>
+    <form action="/api/rooms/hotel/<%= hotel._id %>" method="POST">
+        <div class="form-group">
+            <label for="roomNumber">Room Number</label>
+            <input type="text" id="roomNumber" name="roomNumber" required>
+        </div>
+        <div class="form-group">
+            <label for="type">Room Type</label>
+            <input type="text" id="type" name="type" placeholder="e.g., Single, Double, Suite" required>
+        </div>
+        <div class="form-group">
+            <label for="price">Price per night</label>
+            <input type="number" id="price" name="price" min="0" required>
+        </div>
+        <div class="form-group">
+            <label for="images">Image URLs (comma-separated)</label>
+            <input type="text" id="images" name="images">
+        </div>
+        <button type="submit" class="btn btn-primary">Add Room</button>
+    </form>
+</div>
+
+<%- include('partials/footer') %>

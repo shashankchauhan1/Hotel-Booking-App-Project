@@ -1,0 +1,61 @@
+<%- include('partials/header') %>
+
+<div class="form-container">
+    <h2>My Profile</h2>
+    <form action="/api/users/profile" method="POST" id="updateProfileForm">
+        <!-- We'll use client-side JS to handle the PUT request -->
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" value="<%= user.username %>" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="<%= user.email %>" required>
+        </div>
+        <div class="form-group">
+            <label for="password">New Password (leave blank to keep current)</label>
+            <input type="password" id="password" name="password">
+        </div>
+        <button type="submit" class="btn btn-primary">Update Profile</button>
+    </form>
+</div>
+
+<script>
+    // Since HTML forms only support GET and POST, we'll use JavaScript's fetch
+    // to send a PUT request for the profile update.
+    document.getElementById('updateProfileForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const form = e.target;
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        // Don't send an empty password field
+        if (!data.password) {
+            delete data.password;
+        }
+
+        try {
+            const response = await fetch('/api/users/profile', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                alert('Profile updated successfully!');
+                window.location.reload();
+            } else {
+                const result = await response.json();
+                alert('Error: ' + (result.message || 'Failed to update profile'));
+            }
+        } catch (error) {
+            console.error('Update error:', error);
+            alert('An error occurred. Please try again.');
+        }
+    });
+</script>
+
+<%- include('partials/footer') %>

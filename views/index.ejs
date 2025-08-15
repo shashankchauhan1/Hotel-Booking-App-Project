@@ -1,0 +1,40 @@
+<%- include('partials/header') %>
+
+<div class="hero">
+    <h1>Find Your Next Stay</h1>
+    <p>Discover the best hotels at the best prices.</p>
+    <form action="/hotels" method="GET">
+        <input type="search" name="search" placeholder="Search for a location..." required>
+        <button type="submit" class="btn">Search</button>
+    </form>
+</div>
+
+<div class="featured-hotels">
+    <h2>Featured Destinations</h2>
+    <!-- You can dynamically add featured hotels here later -->
+    <div class="hotel-grid">
+        <div class="card">
+            <img src="https://placehold.co/600x400/EEE/31343C?text=Hotel+Image" alt="Luxury Downtown Hotel">
+            <div class="card-body">
+                <h3>Luxury Downtown Hotel</h3>
+                <p>New York, USA</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="https://placehold.co/600x400/EEE/31343C?text=Hotel+Image" alt="Seaside Resort">
+            <div class="card-body">
+                <h3>Seaside Resort</h3>
+                <p>Malibu, USA</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="https://placehold.co/600x400/EEE/31343C?text=Hotel+Image" alt="Mountain Lodge">
+            <div class="card-body">
+                <h3>Mountain Lodge</h3>
+                <p>Aspen, USA</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

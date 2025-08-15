@@ -1,0 +1,36 @@
+<%- include('partials/header') %>
+
+
+<h2>My Bookings</h2>
+
+<div class="bookings-list">
+    <% if (bookings.length > 0) { %>
+        <% bookings.forEach(booking => { %>
+            <div class="card booking-card">
+                <div class="card-body">
+                    <h3><%= booking.hotel.name %></h3>
+                    <p><%= booking.hotel.location %></p>
+                    <p><strong>Room:</strong> <%= booking.room.type %> - <%= booking.room.roomNumber %></p>
+                    <p>
+                        <strong>Dates:</strong> 
+                        <%= new Date(booking.checkInDate).toLocaleDateString() %> to 
+                        <%= new Date(booking.checkOutDate).toLocaleDateString() %>
+                    </p>
+                    <p><strong>Total Price:</strong> $<%= booking.totalPrice.toFixed(2) %></p>
+                    <p><strong>Status:</strong> <span class="status-<%= booking.status %>"><%= booking.status %></span></p>
+
+                    <% if (booking.status !== 'cancelled') { %>
+                        <form action="/api/bookings/<%= booking._id %>/cancel" method="POST" onsubmit="return confirm('Are you sure you want to cancel this booking?');">
+                             <!-- This will be a PUT request handled by JS later if we want a cleaner API, but POST with override works too -->
+                            <button type="submit" class="btn btn-danger">Cancel Booking</button>
+                        </form>
+                    <% } %>
+                </div>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <p>You have no bookings yet. <a href="/hotels">Find a hotel to book!</a></p>
+    <% } %>
+</div>
+
+<%- include('partials/footer') %>

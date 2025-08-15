@@ -1,0 +1,38 @@
+<%- include('partials/header') %>
+
+<h2>Explore Hotels</h2>
+
+<!-- Filter form -->
+<form action="/hotels" method="GET" class="filter-form">
+    <label for="rating">Filter by rating (and above):</label>
+    <select name="rating" id="rating" onchange="this.form.submit()">
+        <option value="">All</option>
+        <option value="4" <%= query.rating == '4' ? 'selected' : '' %>>4 Stars & Up</option>
+        <option value="3" <%= query.rating == '3' ? 'selected' : '' %>>3 Stars & Up</option>
+        <option value="2" <%= query.rating == '2' ? 'selected' : '' %>>2 Stars & Up</option>
+        <option value="1" <%= query.rating == '1' ? 'selected' : '' %>>1 Star & Up</option>
+    </select>
+</form>
+
+<div class="hotel-grid">
+    <% if (hotels && hotels.length > 0) { %>
+        <% hotels.forEach(hotel => { %>
+            <div class="card">
+                <a href="/hotel/<%= hotel._id %>">
+                    <img src="<%= hotel.images && hotel.images.length ? hotel.images[0] : 'https://placehold.co/600x400/EEE/31343C?text=No+Image' %>" alt="<%= hotel.name %>">
+                    <div class="card-body">
+                        <h3><%= hotel.name %></h3>
+                        <p><%= hotel.location %></p>
+                        <div class="rating">
+                            <span>Rating: <%= hotel.rating ? hotel.rating.toFixed(1) : 'N/A' %> / 5</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <p>No hotels found matching your criteria.</p>
+    <% } %>
+</div>
+
+<%- include('partials/footer') %>

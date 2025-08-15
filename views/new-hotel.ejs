@@ -1,0 +1,72 @@
+<%- include('partials/header', { user: user }) %>
+
+<div class="form-container">
+    <h2>Add a New Hotel</h2>
+    <form id="addHotelForm">
+        <div class="form-group">
+            <label for="name">Hotel Name</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="location">Location</label>
+            <input type="text" id="location" name="location" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="5" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="images">Image URLs (comma-separated)</label>
+            <input type="text" id="images" name="images" placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg">
+        </div>
+        <div class="form-group">
+            <label for="rating">Initial Rating (0-5)</label>
+            <input type="number" id="rating" name="rating" min="0" max="5" step="0.1" value="0" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Hotel</button>
+    </form>
+    <p id="errorMessage" style="color: red;"></p>
+</div>
+
+<script>
+    document.getElementById('addHotelForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const errorMessage = document.getElementById('errorMessage');
+        errorMessage.textContent = '';
+
+        // Split the images string into an array
+        const images = form.images.value.split(',').map(url => url.trim()).filter(url => url);
+
+        const hotelData = {
+            name: form.name.value,
+            location: form.location.value,
+            description: form.description.value,
+            images: images,
+            rating: parseFloat(form.rating.value) || 0 // Added rating field
+        };
+
+        try {
+            const response = await fetch('/api/hotels', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(hotelData)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Redirect to the new hotel's page
+                alert('Hotel added successfully!');
+                window.location.assign(`/hotel/${data._id}`);
+            } else {
+                errorMessage.textContent = data.message || 'Failed to add hotel.';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            errorMessage.textContent = 'An error occurred.';
+        }
+    });
+</script>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,56 @@
+<%- include('partials/header', { user: user }) %>
+
+<div class="form-container">
+    <h2>Login to Your Account</h2>
+    <!-- Give the form an ID so we can select it with JavaScript -->
+    <form id="loginForm">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    <p id="errorMessage" style="color: red;"></p>
+    <p>Don't have an account? <a href="/signup">Sign up here</a>.</p>
+</div>
+
+<script>
+    const form = document.getElementById('loginForm');
+    const errorMessage = document.getElementById('errorMessage');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Prevent the default form submission
+
+        errorMessage.textContent = ''; // Clear previous errors
+
+        const email = form.email.value;
+        const password = form.password.value;
+
+        try {
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                body: JSON.stringify({ email, password }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                // If login is successful, redirect to the homepage
+                window.location.assign('/');
+            } else {
+                // If there's an error, display it
+                errorMessage.textContent = data.message;
+            }
+        } catch (err) {
+            console.log(err);
+            errorMessage.textContent = 'An error occurred. Please try again.';
+        }
+    });
+</script>
+
+<%- include('partials/footer') %>
