@@ -2,7 +2,9 @@
 
 <div class="form-container">
     <h2>Add a New Room to <%= hotel.name %></h2>
-    <form action="/api/rooms/hotel/<%= hotel._id %>" method="POST">
+
+    <div id="form-message"></div>
+    <form id="add-room-form" action="/api/rooms/hotel/<%= hotel._id %>" method="POST">
         <div class="form-group">
             <label for="roomNumber">Room Number</label>
             <input type="text" id="roomNumber" name="roomNumber" required>
@@ -22,5 +24,56 @@
         <button type="submit" class="btn btn-primary">Add Room</button>
     </form>
 </div>
+
+<script>
+    const form = document.getElementById('add-room-form');
+    const messageDiv = document.getElementById('form-message');
+
+    form.addEventListener('submit', async (event) => {
+        // 1. Prevent the default form submission (which causes the navigation)
+        event.preventDefault();
+
+        // 2. Get the data from the form
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        // Convert the comma-separated image string into an array of strings
+        if (data.images) {
+            data.images = data.images.split(',').map(url => url.trim());
+        }
+
+        try {
+            // 3. Send the data to the server using the Fetch API
+            const response = await fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            // 4. Get the JSON response from the server
+            const result = await response.json();
+
+            // 5. Display a message to the user based on the response
+            if (response.ok) { // response.ok is true if the HTTP status is 200-299
+                messageDiv.textContent = result.message || 'Room added successfully!';
+                messageDiv.style.color = 'green';
+                form.reset(); // Clear the form fields for the next entry
+
+                // Optional: Redirect the user to the hotel page after 2 seconds
+                setTimeout(() => {
+                    window.location.href = '/hotel/<%= hotel._id %>';
+                }, 2000);
+            } else {
+                // If the server sent an error status (like 400 or 500)
+                throw new Error(result.message || 'An error occurred.');
+            }
+        } catch (error) {
+            messageDiv.textContent = error.message;
+            messageDiv.style.color = 'red';
+        }
+    });
+</script>
 
 <%- include('partials/footer') %>
