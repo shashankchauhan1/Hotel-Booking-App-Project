@@ -1,12 +1,12 @@
 /* --- General Body & Typography --- */
 :root {
-    --primary-color: #3498db;
-    --secondary-color: #2c3e50;
-    --background-color: #f4f7f6;
-    --surface-color: #ffffff;
-    --text-color: #333;
+    --primary-color: #8B5CF6;       /* A vibrant, modern purple for accents */
+    --secondary-color: #F8FAFC;     /* A clean, bright off-white for headings */
+    --background-color: #0F172A;   /* A very dark, deep indigo background */
+    --surface-color: #1E293B;       /* A dark slate for cards, navbars, and surfaces */
+    --text-color: #E2E8F0;          /* A soft, readable light gray for body text */
     --border-radius: 8px;
-    --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* A darker shadow for better visibility */
 }
 
 body {
@@ -91,7 +91,7 @@ a {
 }
 
 .btn:hover {
-    background: #2980b9;
+    background: #7C3AED; /* Darker purple for hover */
 }
 
 .btn-primary {
@@ -144,7 +144,9 @@ a {
 .form-group select {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #475569; /* Darker border for inputs */
+    background-color: var(--background-color); /* Match main background */
+    color: var(--text-color); /* Light text color */
     border-radius: var(--border-radius);
     box-sizing: border-box;
 }
@@ -160,7 +162,7 @@ a {
 
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
 }
 
 .card img {
@@ -184,7 +186,7 @@ a {
 .hero {
     text-align: center;
     padding: 60px 20px;
-    background: linear-gradient(to right, #6dd5ed, #2193b0);
+    background: linear-gradient(to right, #4C1D95, #1E293B); /* Deep purple to slate gradient */
     color: white;
     border-radius: var(--border-radius);
     margin-top: 20px;
@@ -229,5 +231,5 @@ footer {
     text-align: center;
     padding: 20px;
     margin-top: 40px;
-    color: #777;
+    color: #94A3B8; /* Lighter, less prominent gray for footer */
 }
